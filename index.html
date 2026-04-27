@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>✨ Anime Course Registration · Pendaftaran Kursus ✨</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: radial-gradient(circle at 10% 20%, #ffdde1, #ee9ca7, #ff7eb3);
+            background-attachment: fixed;
+            font-family: 'Poppins', 'Quicksand', 'Comic Neue', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', sans-serif;
+            padding: 2rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* decorative anime style elements: sakura petals & sparkles */
+        body::before {
+            content: "🌸✨⭐🎀";
+            position: absolute;
+            font-size: 70px;
+            top: 15px;
+            left: -20px;
+            opacity: 0.2;
+            white-space: pre;
+            pointer-events: none;
+            transform: rotate(-10deg);
+            z-index: 0;
+        }
+
+        body::after {
+            content: "✨⭐🍙🎴";
+            position: absolute;
+            bottom: 10px;
+            right: -15px;
+            font-size: 90px;
+            opacity: 0.2;
+            pointer-events: none;
+            transform: rotate(5deg);
+            z-index: 0;
+        }
+
+        /* floating star animation */
+        @keyframes floatStar {
+            0% { transform: translateY(0px) rotate(0deg); opacity: 0.6;}
+            100% { transform: translateY(-25px) rotate(8deg); opacity: 0.2;}
+        }
+
+        .anime-bg-icon {
+            position: absolute;
+            font-size: 2rem;
+            user-select: none;
+            pointer-events: none;
+            z-index: 0;
+            animation: floatStar 4s infinite alternate ease-in-out;
+        }
+
+        /* main card — kawaii glassmorphism with anime vibe */
+        .anime-card {
+            max-width: 950px;
+            width: 100%;
+            background: rgba(255, 250, 245, 0.96);
+            backdrop-filter: blur(3px);
+            border-radius: 58px;
+            box-shadow: 0 30px 45px -20px rgba(0, 0, 0, 0.4), 0 0 0 3px #fff9f0, 0 0 0 8px #ffb7c5;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            position: relative;
+            z-index: 10;
+        }
+
+        /* header with anime gradient + chibi characters */
+        .anime-header {
+            background: linear-gradient(125deg, #f9a8d4, #facc15, #f472b6, #c084fc);
+            background-size: 300% 300%;
+            padding: 1.8rem 2rem;
+            text-align: center;
+            border-bottom: 4px dotted rgba(255, 241, 150, 0.8);
+            position: relative;
+        }
+
+        .anime-header h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #fff3c9, #ffffff, #ffe6f0);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .anime-header p {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff5e6;
+            text-shadow: 0 1px 3px #b45371;
+            background: rgba(0, 0, 0, 0.2);
+            display: inline-block;
+            padding: 0.3rem 1.2rem;
+            border-radius: 80px;
+            backdrop-filter: blur(4px);
+            margin-top: 8px;
+        }
+
+        /* chibi decorations */
+        .chibi-deco {
+            font-size: 2rem;
+            position: absolute;
+            bottom: -15px;
+            left: 20px;
+            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.2));
+        }
+        .chibi-deco-right {
+            right: 20px;
+            left: auto;
+            bottom: -15px;
+        }
+
+        /* form body */
+        .form-body {
+            padding: 2rem 2rem 2rem;
+        }
+
+        /* grid layout */
+        .anime-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.6rem 2rem;
+        }
+
+        .full-width {
+            grid-column: span 2;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .input-group label {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #a1225e;
+            letter-spacing: -0.2px;
+            background: rgba(255, 220, 240, 0.6);
+            display: inline-block;
+            width: fit-content;
+            padding: 0.2rem 1rem;
+            border-radius: 50px;
+            backdrop-filter: blur(2px);
+        }
+
+        .required-star {
+            color: #ff3b6f;
+            font-size: 1.1rem;
+            margin-left: 4px;
+        }
+
+        input, select, textarea {
+            font-family: 'Poppins', 'Quicksand', monospace;
+            border: 2px solid #ffe0b5;
+            border-radius: 60px;
+            padding: 12px 20px;
+            font-size: 0.95rem;
+            background-color: #fffef7;
+            transition: 0.2s;
+            outline: none;
+            color: #382110;
+            font-weight: 500;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #ff86b9;
+            box-shadow: 0 0 0 4px rgba(255, 134, 185, 0.3);
+            transform: scale(1.01);
+            background-color: #ffffff;
+        }
+
+        /* Radio group kawaii */
+        .kawaii-radio-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.8rem;
+            background: #fff0f5;
+            padding: 0.6rem 1.4rem;
+            border-radius: 60px;
+            border: 2px solid #ffc0d9;
+        }
+
+        .radio-anime {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: #b13e6b;
+        }
+
+        .radio-anime input[type="radio"] {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border: 2px solid #ff92b0;
+            border-radius: 50%;
+            margin: 0;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .radio-anime input[type="radio"]:checked {
+            background-color: #ff77aa;
+            border-color: #ff4d8c;
+            box-shadow: inset 0 0 0 3px #fff0f5;
+        }
+
+        /* select drop down anime theme */
+        select {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%23f06292" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>');
+            background-repeat: no-repeat;
+            background-position: right 1.2rem center;
+            appearance: none;
+        }
+
+        textarea {
+            border-radius: 32px;
+            resize: vertical;
+            min-height: 100px;
+            font-family: inherit;
+        }
+
+        /* Button Group with anime deco */
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.2rem;
+            margin-top: 2rem;
+            border-top: 2px dashed #ffb7c5;
+            padding-top: 1.8rem;
+        }
+
+        .anime-btn {
+            font-family: inherit;
+            font-weight: 700;
+            padding: 12px 28px;
+            border-radius: 60px;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .btn-reset {
+            background: #ffefd6;
+            color: #ca6f8b;
+            border: 1px solid #ffcdb0;
+        }
+
+        .btn-reset:hover {
+            background: #ffe2c1;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 18px #ffc0cb70;
+        }
+
+        .btn-submit {
+            background: linear-gradient(110deg, #ff7eb3, #ff758c, #ff9a5a);
+            color: white;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            box-shadow: 0 8px 18px #ff8aaa7d;
+        }
+
+        .btn-submit:hover {
+            background: linear-gradient(110deg, #ff5e9e, #ff6a82, #ff8744);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 14px 24px #ff98b5;
+        }
+
+        .btn-cancel {
+            background: #fce4ec;
+            color: #c43b6e;
+            border: 1px solid #fbc4d2;
+        }
+
+        .btn-cancel:hover {
+            background: #ffd6e4;
+            transform: translateY(-2px);
+        }
+
+        .cute-footnote {
+            text-align: center;
+            margin-top: 1.4rem;
+            font-size: 0.75rem;
+            color: #e06a91;
+            background: rgba(255, 240, 245, 0.7);
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0.2rem 1rem;
+            border-radius: 60px;
+        }
+
+        @media (max-width: 720px) {
+            .anime-grid {
+                grid-template-columns: 1fr;
+                gap: 1.2rem;
+            }
+            .full-width {
+                grid-column: span 1;
+            }
+            .form-body {
+                padding: 1.5rem;
+            }
+            .anime-header h1 {
+                font-size: 1.7rem;
+            }
+        }
+
+        /* additional floating decorations */
+        .floating-cat {
+            position: absolute;
+            bottom: 20px;
+            left: 15px;
+            font-size: 40px;
+            opacity: 0.5;
+            z-index: 1;
+            pointer-events: none;
+            transform: rotate(-5deg);
+        }
+    </style>
+</head>
+<body>
+<!-- floating anime items (pure css charm) -->
+<div class="anime-bg-icon" style="top: 12%; left: 3%;">🐱‍👤✨</div>
+<div class="anime-bg-icon" style="bottom: 8%; right: 4%; animation-duration: 5s;">🍡🌸</div>
+<div class="anime-bg-icon" style="top: 40%; right: 2%; font-size: 2.5rem;">🎀⭐</div>
+<div class="anime-bg-icon" style="bottom: 25%; left: 2%;">🎴💖</div>
+
+<div class="anime-card">
+    <div class="anime-header">
+        <div class="chibi-deco">😺⭐</div>
+        <div class="chibi-deco chibi-deco-right">🍙🎧</div>
+        <h1>
+            <span>✧ アニメ ・ 登録  ✧</span>
+            <span>📘 Pendaftaran Kursus</span>
+        </h1>
+        <p>🌸✨  pilih program impianmu, wujudkan masa depan kawaii! ✨🌸</p>
+    </div>
+    <div class="form-body">
+        <form id="animeForm" action="#" method="post">
+            <div class="anime-grid">
+                <!-- Nama -->
+                <div class="input-group full-width">
+                    <label>🎀 Nama Lengkap <span class="required-star">★</span></label>
+                    <input type="text" id="nama" name="nama" placeholder="contoh: Hoshino Yuki / Putri" required>
+                </div>
+                <!-- NIM -->
+                <div class="input-group">
+                    <label>🎓 NIM (ID Mahasiswa) <span class="required-star">★</span></label>
+                    <input type="text" id="nim" name="nim" placeholder="202410123456" required>
+                </div>
+                <!-- E-mail -->
+                <div class="input-group">
+                    <label>📧 E-mail <span class="required-star">★</span></label>
+                    <input type="email" id="email" name="email" placeholder="yuki@anime.com" required>
+                </div>
+                <!-- Tanggal Lahir -->
+                <div class="input-group">
+                    <label>🎂 Tanggal Lahir <span class="required-star">★</span></label>
+                    <input type="text" id="tgl_lahir" name="tgl_lahir" placeholder="dd/mm/yyyy (contoh: 07/07/2001)" required>
+                    <div class="cute-footnote" style="margin-top: 4px; background: none; padding-left:0;">✨ format: hari/bulan/tahun ✨</div>
+                </div>
+                <!-- Jenis Kelamin Anime style -->
+                <div class="input-group">
+                    <label>⚧ Jenis Kelamin <span class="required-star">★</span></label>
+                    <div class="kawaii-radio-group">
+                        <label class="radio-anime">
+                            <input type="radio" name="gender" value="Laki-laki"> <span>🧸 Laki-laki</span>
+                        </label>
+                        <label class="radio-anime">
+                            <input type="radio" name="gender" value="Perempuan"> <span>🎀 Perempuan</span>
+                        </label>
+                    </div>
+                </div>
+                <!-- Pilih Program Kursus dengan icon anime -->
+                <div class="input-group">
+                    <label>💻 Pilih Program Kursus <span class="required-star">★</span></label>
+                    <select id="program" name="program_kursus" required>
+                        <option value="" disabled selected>— ★ pilih kursus favoritmu ★ —</option>
+                        <option value="C#">🎮 C# (Game / Desktop Dev)</option>
+                        <option value="Java">☕ Java (Backend / Android)</option>
+                        <option value="SQL">🗄️ SQL (Database & Analisis)</option>
+                        <option value="HTML dan PHP">🌐 HTML dan PHP (Web Anime Studio)</option>
+                    </select>
+                </div>
+                <!-- Pilihan Hari/Jam Kursus - lebih banyak opsi kawaii -->
+                <div class="input-group">
+                    <label>📅 Pilihan Hari/Jam Kursus <span class="required-star">★</span></label>
+                    <select id="jadwal" name="jadwal_kursus" required>
+                        <option value="Senin - Rabu/09.00 - 11.00">🌸 Senin - Rabu / 09.00 - 11.00 (Pagi Cerah)</option>
+                        <option value="Selasa - Kamis/13.00 - 15.00" selected>🌙 Selasa - Kamis / 13.00 - 15.00 (Siang Santai)</option>
+                        <option value="Rabu - Jumat/10.00 - 12.00">🍡 Rabu - Jumat / 10.00 - 12.00 (Latte Time)</option>
+                        <option value="Sabtu - Minggu/08.00 - 10.00">⭐ Sabtu - Minggu / 08.00 - 10.00 (Weekend Hero)</option>
+                        <option value="Senin - Rabu/17.00 - 19.00">🌆 Senin - Rabu / 17.00 - 19.00 (Golden Hour)</option>
+                    </select>
+                </div>
+                <!-- Komentar Anda area -->
+                <div class="input-group full-width">
+                    <label>💌 Komentar / Pesan Anime</label>
+                    <textarea id="komentar" name="komentar" placeholder="Tulis pesan semangat, keperluan khusus, atau pertanyaan seputar kursus...  (人◕ω◕)"></textarea>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button type="reset" class="anime-btn btn-reset" id="resetBtn">🔄 Reset Form</button>
+                <button type="submit" class="anime-btn btn-submit" id="submitBtn">✨ Submit DAFTAR ✨</button>
+                <button type="button" class="anime-btn btn-cancel" id="cancelBtn">❌ Cancel / Batal</button>
+            </div>
+            <div class="cute-footnote">★彡 [Dengan mendaftar, kamu setuju mendapat info kursus via email] 彡★</div>
+        </form>
+    </div>
+</div>
+
+<script>
+    (function() {
+        const form = document.getElementById('animeForm');
+        const resetBtn = document.getElementById('resetBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
+
+        // fungsi validasi tanggal: dd/mm/yyyy
+        function isValidDateAnime(dateStr) {
+            const regex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/(19|20)\d{2}$/;
+            if (!regex.test(dateStr)) return false;
+            const [day, month, year] = dateStr.split('/').map(Number);
+            const date = new Date(year, month - 1, day);
+            return date.getDate() === day && date.getMonth() === month - 1 && date.getFullYear() === year;
+        }
+
+        // enhanced reset (anime style)
+        function animeReset() {
+            form.reset();
+            // because radio buttons have no default checked, we manually uncheck both
+            const radioMale = document.querySelector('input[value="Laki-laki"]');
+            const radioFemale = document.querySelector('input[value="Perempuan"]');
+            if (radioMale) radioMale.checked = false;
+            if (radioFemale) radioFemale.checked = false;
+            // set select program ke placeholder (disabled kosong)
+            const progSelect = document.getElementById('program');
+            if (progSelect) progSelect.value = "";
+            // jadwal direset sesuai "selected" yg ada di html (Selasa - Kamis/13.00 - 15.00)
+            // textarea kosong
+            document.getElementById('komentar').value = "";
+            // notifikasi kawaii
+            alert("🌸 Form telah direset! Semua data bersih ~ (◕‿◕)");
+        }
+
+        // Cancel function (bersihkan form)
+        function handleCancel() {
+            let confirmClear = confirm("⚠️ Yakin ingin membatalkan semua input? Data akan dihapus total 〣( ºΔº )〣");
+            if (confirmClear) {
+                animeReset();
+                alert("✨ Form dibatalkan dan dikosongkan. Silakan daftar lagi kapanpun! ✨");
+            }
+        }
+
+        // submit handler with cute confirmation
+        function handleSubmit(event) {
+            event.preventDefault();
+
+            const nama = document.getElementById('nama').value.trim();
+            const nim = document.getElementById('nim').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const tglLahir = document.getElementById('tgl_lahir').value.trim();
+            let genderVal = null;
+            const radios = document.querySelectorAll('input[name="gender"]');
+            for (let r of radios) if (r.checked) { genderVal = r.value; break; }
+            const program = document.getElementById('program').value;
+            const jadwal = document.getElementById('jadwal').value;
+            const komentar = document.getElementById('komentar').value.trim() || "(Tidak ada pesan)";
+
+            // validasi
+            if (!nama) { alert("🌸 Nama lengkap harus diisi yaa ~"); document.getElementById('nama').focus(); return; }
+            if (!nim) { alert("🎓 NIM wajib diisi! (Jangan lupa isi NIM)"); document.getElementById('nim').focus(); return; }
+            if (!email) { alert("📧 Email diperlukan untuk konfirmasi pendaftaran~"); document.getElementById('email').focus(); return; }
+            if (!email.includes('@') || !email.includes('.')) { alert("⚠️ Email tampaknya kurang valid, gunakan format seperti nama@domain.com"); document.getElementById('email').focus(); return; }
+            if (!tglLahir) { alert("🎂 Tanggal lahir harus diisi (dd/mm/yyyy)"); document.getElementById('tgl_lahir').focus(); return; }
+            if (!isValidDateAnime(tglLahir)) { alert("📅 Format tanggal salah! Gunakan dd/mm/yyyy (contoh: 23/04/2002). Periksa kembali."); document.getElementById('tgl_lahir').focus(); return; }
+            if (!genderVal) { alert("⚧ Pilih jenis kelamin dulu ya (Laki-laki / Perempuan) ～🎀"); return; }
+            if (!program || program === "") { alert("💻 Silakan pilih program kursus favoritmu dari daftar."); document.getElementById('program').focus(); return; }
+
+            // mapping jadwal biar rapi
+            let jadwalText = jadwal;
+            if (jadwal === "Senin - Rabu/09.00 - 11.00") jadwalText = "Senin - Rabu / 09.00 - 11.00 (Pagi Cerah)";
+            else if (jadwal === "Selasa - Kamis/13.00 - 15.00") jadwalText = "Selasa - Kamis / 13.00 - 15.00 (Siang Santai)";
+            else if (jadwal === "Rabu - Jumat/10.00 - 12.00") jadwalText = "Rabu - Jumat / 10.00 - 12.00 (Latte Time)";
+            else if (jadwal === "Sabtu - Minggu/08.00 - 10.00") jadwalText = "Sabtu - Minggu / 08.00 - 10.00 (Weekend Hero)";
+            else if (jadwal === "Senin - Rabu/17.00 - 19.00") jadwalText = "Senin - Rabu / 17.00 - 19.00 (Golden Hour)";
+
+            let msg = `🎉🌸  Pendaftaran Berhasil! 🌸🎉\n\n` +
+                `🧸 Nama: ${nama}\n` +
+                `🎓 NIM: ${nim}\n` +
+                `📧 Email: ${email}\n` +
+                `🎂 Tanggal Lahir: ${tglLahir}\n` +
+                `👘 Jenis Kelamin: ${genderVal}\n` +
+                `💻 Program Kursus: ${program}\n` +
+                `📅 Jadwal Pilihan: ${jadwalText}\n` +
+                `💬 Komentar: ${komentar}\n\n` +
+                `✨ Terima kasih sudah mendaftar! Cek email untuk info lebih lanjut ya~ ✨\n` +
+                `(≧∇≦)/  Ganbatte!`;
+
+            alert(msg);
+            // optional: bisa langsung reset setelah submit? tapi tidak agar user puas lihat data; bisa reset manual.
+            // kita tidak reset otomatis, biar user bisa copy data jika perlu
+        }
+
+        // event listeners
+        if (form) form.addEventListener('submit', handleSubmit);
+        if (resetBtn) resetBtn.addEventListener('click', (e) => { e.preventDefault(); animeReset(); });
+        if (cancelBtn) cancelBtn.addEventListener('click', (e) => { e.preventDefault(); handleCancel(); });
+    })();
+</script>
+</body>
+</html>
